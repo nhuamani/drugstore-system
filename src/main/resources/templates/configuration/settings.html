@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+    <main layout:fragment="main">
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2 th:text="${title}" class="mb-0">Título de Sección</h2>
+                        <p>Personaliza la identidad visual y los datos de facturación de la Botica.</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-end">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li th:text="${name_plural}" class="breadcrumb-item" aria-current="page">Name Page</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <!-- Mensaje -->
+                        <div class="callout callout-info" th:if="${success}" th:text="${success}"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <form th:action="@{/configurations/save}"
+                              th:object="${configuration}"
+                              method="post"
+                              class="row">
+
+                            <div class="col-lg-5">
+                                <!-- Logo -->
+                                <label class="form-label">Logotipo Institucional</label>
+                                <input type="file"
+                                       class="form-control">
+
+                                <input type="text"
+                                       class="form-control"
+                                       th:field="*{logo}">
+
+                                <small style="color:#7F8C8D; font-size: 11px;">Esta imagen reemplazará automáticamente el logo del sistema en todos los módulos. Formatos: .png, .jpg</small>
+                            </div>
+
+                            <div class="col-lg-7">
+                                <div class="row">
+                                    <!-- Nombre Botica -->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="name">Nombre o Razón Social</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="nav-icon bi bi-shop"></i>
+                                            </span>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   minlength="5"
+                                                   id="name"
+                                                   required
+                                                   th:field="*{nombreBotica}" />
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Nombre comercial de la farmacia/botica</small>
+                                    </div>
+
+                                    <!-- RUC -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="ruc">R.U.C / NIT</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-vcard"></i>
+                                            </span>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="ruc"
+                                                   minlength="11"
+                                                   maxlength="11"
+                                                   th:field="*{ruc}">
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Número de Registro Único de Contribuyente</small>
+                                    </div>
+
+                                    <!-- Teléfono -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="telefono">Teléfono Comercial</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-telephone"></i>
+                                            </span>
+                                            <input type="tel"
+                                                   class="form-control"
+                                                   id="telefono"
+                                                   th:field="*{telefono}">
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Número de Teléfono Principal</small>
+                                    </div>
+
+                                    <!-- Dirección -->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="direccion">Dirección Fiscal / Establecimiento</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-geo-alt"></i>
+                                            </span>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="direccion"
+                                                   required
+                                                   th:field="*{direccion}">
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Dirección del establecimiento</small>
+                                    </div>
+
+                                    <!-- Moneda -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="money">Símbolo de Moneda</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-cash-coin"></i>
+                                            </span>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="money"
+                                                   required
+                                                   th:field="*{moneda}">
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Símbolo de la moneda utilizada</small>
+                                    </div>
+
+                                    <!-- IGV -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label" for="igv">Porcentaje de I.G.V. (%)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-percent"></i>
+                                            </span>
+                                            <input type="number"
+                                                   class="form-control"
+                                                   id="igv"
+                                                   required
+                                                   th:field="*{igv}">
+                                        </div>
+                                        <small style="color:#7F8C8D; font-size: 11px;">Porcentaje de Impuesto a la Ganancia</small>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="col-md-3 btn btn-success">
+                                    Guardar cambios
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</html>

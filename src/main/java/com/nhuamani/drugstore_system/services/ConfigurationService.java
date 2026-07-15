@@ -1,17 +1,12 @@
 package com.nhuamani.drugstore_system.services;
 
-import com.nhuamani.drugstore_system.dtos.ConfigurationDTO;
+import com.nhuamani.drugstore_system.dtos.ConfigurationFormDTO;
 
-import java.util.List;
 
 public interface ConfigurationService {
 
-    List<ConfigurationDTO> findAll();
+    ConfigurationFormDTO getConfiguration();
 
-    ConfigurationDTO findById(Integer id);
-
-    void save(ConfigurationDTO dto);
-
-    void delete(Integer id);
+    void saveConfiguration(ConfigurationFormDTO dto);
 
 }

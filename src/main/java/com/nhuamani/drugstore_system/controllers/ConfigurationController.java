@@ -1,60 +1,49 @@
 package com.nhuamani.drugstore_system.controllers;
 
-import com.nhuamani.drugstore_system.dtos.ConfigurationDTO;
+import com.nhuamani.drugstore_system.dtos.ConfigurationFormDTO;
 import com.nhuamani.drugstore_system.services.ConfigurationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/configurations")
 public class ConfigurationController {
 
-    private final ConfigurationService service;
+    private final ConfigurationService configurationService;
 
-    public ConfigurationController(ConfigurationService service){
-        this.service = service;
+    public ConfigurationController(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
     }
 
+    // Mostrar formulario de configuración
     @GetMapping
-    public String getAll(Model model) {
+    public String showConfiguration(Model model) {
 
-        model.addAttribute("configurations", service.findAll());
+        ConfigurationFormDTO configuration = configurationService.getConfiguration();
 
-        return "configuration/list";
+        model.addAttribute("configuration", configuration);
+        model.addAttribute("title", "Ajustes de Empresa");
+        model.addAttribute("singular_name", "Configuración");
+        model.addAttribute("name_plural", "Configuraciones");
+
+        return "configuration/settings";
     }
 
-    @GetMapping("/new")
-    public String newConfiguration(Model model) {
 
-        model.addAttribute("configuration", new ConfigurationDTO());
-
-        return "configuration/form";
-    }
-
+    // Guardar cambios
     @PostMapping("/save")
-    public String save(@ModelAttribute ConfigurationDTO dto){
+    public String saveConfiguration(
+            @ModelAttribute("configuration") ConfigurationFormDTO dto,
+            RedirectAttributes redirectAttributes) {
 
-        service.save(dto);
+        configurationService.saveConfiguration(dto);
 
-        return "redirect:/configurations";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Integer id, Model model) {
-        ConfigurationDTO dto = service.findById(id);
-
-        if (dto == null) {
-            return "redirect:/configurations";
-        }
-
-        model.addAttribute("configuration", dto);
-        return "configuration/form";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
-        service.delete(id);
+        redirectAttributes.addFlashAttribute(
+                "success",
+                "Configuración actualizada correctamente"
+        );
         return "redirect:/configurations";
     }
 

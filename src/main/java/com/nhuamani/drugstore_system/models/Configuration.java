@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @Entity
@@ -16,14 +14,13 @@ public class Configuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(name = "setting_key", nullable = false, unique = true, length = 50)
     private String settingKey;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "setting_value", columnDefinition = "TEXT")
     private String settingValue;
 
-    @Column(length = 255)
+    @Column(name = "description", length = 255)
     private String description;
 
-    // getters y setters
 }

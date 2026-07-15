@@ -5,11 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 public interface ConfigurationRepository extends JpaRepository<Configuration, Integer> {
 
-    Optional<Configuration> findBySettingKey(String name);
+    Optional<Configuration> findBySettingKey(String settingKey);
 
 }
