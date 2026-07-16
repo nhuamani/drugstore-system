@@ -6,13 +6,19 @@ import com.nhuamani.drugstore_system.repositories.ConfigurationRepository;
 import com.nhuamani.drugstore_system.services.ConfigurationService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class ConfigurationServiceImpl implements ConfigurationService {
 
+    private static final String UPLOAD_FOLDER = "src/main/resources/static/uploads/logos/";
     private final ConfigurationRepository configurationRepository;
 
     public ConfigurationServiceImpl(ConfigurationRepository configurationRepository) {
@@ -42,7 +48,22 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public void saveConfiguration(ConfigurationFormDTO dto) {
+    public void saveConfiguration(ConfigurationFormDTO dto, MultipartFile logoFile) {
+
+        if (!logoFile.isEmpty()) {
+
+            try {
+                String fileName = logoFile.getOriginalFilename();
+
+                Path path = Paths.get(UPLOAD_FOLDER + fileName);
+
+                Files.write(path, logoFile.getBytes());
+
+                dto.setLogo(fileName);
+            } catch (IOException e) {
+                throw new RuntimeException("Error guardando logo", e);
+            }
+        }
 
         updateValue("nombre_botica", dto.getNombreBotica());
         updateValue("ruc", dto.getRuc());

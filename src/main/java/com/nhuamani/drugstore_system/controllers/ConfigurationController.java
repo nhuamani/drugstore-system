@@ -5,6 +5,7 @@ import com.nhuamani.drugstore_system.services.ConfigurationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -36,9 +37,10 @@ public class ConfigurationController {
     @PostMapping("/save")
     public String saveConfiguration(
             @ModelAttribute("configuration") ConfigurationFormDTO dto,
+            @RequestParam("logoFile") MultipartFile logoFile,
             RedirectAttributes redirectAttributes) {
 
-        configurationService.saveConfiguration(dto);
+        configurationService.saveConfiguration(dto, logoFile);
 
         redirectAttributes.addFlashAttribute(
                 "success",

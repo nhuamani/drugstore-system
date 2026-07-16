@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 
+    <th:block layout:fragment="styles">
+        <link rel="stylesheet" th:href="@{/css/configuration.css}">
+    </th:block>
+
     <main layout:fragment="main">
         <div class="app-content-header">
             <div class="container-fluid">
@@ -33,19 +37,33 @@
                         <form th:action="@{/configurations/save}"
                               th:object="${configuration}"
                               method="post"
+                              enctype="multipart/form-data"
                               class="row">
 
-                            <div class="col-lg-5">
-                                <!-- Logo -->
-                                <label class="form-label">Logotipo Institucional</label>
-                                <input type="file"
-                                       class="form-control">
+                            <div class="col-lg-5 center-box">
 
-                                <input type="text"
-                                       class="form-control"
-                                       th:field="*{logo}">
+                                <div class="logo-upload">
 
-                                <small style="color:#7F8C8D; font-size: 11px;">Esta imagen reemplazará automáticamente el logo del sistema en todos los módulos. Formatos: .png, .jpg</small>
+                                    <label for="logoInput">
+                                        <img id="logoPreview"
+                                             th:src="${configuration.logo != null && !configuration.logo.isEmpty()}
+                                            ? @{/uploads/logos/{file}(file=${configuration.logo})}
+                                            : @{/assets/img/default-logo.png}">
+
+                                        <div class="overlay">
+                                            <i class="bi bi-camera-fill"></i>
+                                            <span>Cambiar logo</span>
+                                        </div>
+                                    </label>
+
+                                    <input id="logoInput"
+                                           type="file"
+                                           name="logoFile"
+                                           accept="image/*"
+                                           hidden>
+
+                                    <small style="color:#7F8C8D; font-size: 11px; text-align: center; ">Esta imagen reemplazará automáticamente el logo del sistema en todos los módulos. Formatos: .png, .jpg</small>
+                                </div>
                             </div>
 
                             <div class="col-lg-7">
@@ -163,4 +181,70 @@
         </div>
 
     </main>
+
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/configuration.js}"></script>
+    </th:block>
 </html>
+
+<!--<input type="file"-->
+<!--       id="logoFile"-->
+<!--       name="logoFile"-->
+<!--       accept=".png,.jpg,.jpeg">-->
+
+
+<!--<img id="logoPreview"-->
+<!--     src="/images/default-logo.png"-->
+<!--     class="rounded-circle"-->
+<!--     width="220"-->
+<!--     height="220"-->
+<!--     alt="Logo Preview">-->
+
+<!--<script>-->
+
+<!--    document.getElementById("logoFile")-->
+<!--        .addEventListener("change", function(event) {-->
+
+
+<!--            const file = event.target.files[0];-->
+
+
+<!--            if (!file) {-->
+<!--                return;-->
+<!--            }-->
+
+
+<!--            // Validar extensión-->
+<!--            const allowedExtensions = [-->
+<!--                "image/png",-->
+<!--                "image/jpeg"-->
+<!--            ];-->
+
+
+<!--            if (!allowedExtensions.includes(file.type)) {-->
+
+<!--                alert("Solo se permiten imágenes PNG o JPG");-->
+
+<!--                event.target.value = "";-->
+
+<!--                return;-->
+<!--            }-->
+
+
+<!--            // Crear vista previa-->
+<!--            const reader = new FileReader();-->
+<!--            -->
+<!--            reader.onload = function(e) {-->
+
+<!--                document.getElementById("logoPreview").src =-->
+<!--                    e.target.result;-->
+
+<!--            };-->
+
+
+<!--            reader.readAsDataURL(file);-->
+
+
+<!--        });-->
+
+<!--</script>-->
