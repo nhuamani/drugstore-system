@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @Service
@@ -53,12 +54,31 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         if (!logoFile.isEmpty()) {
 
             try {
-                String fileName = logoFile.getOriginalFilename();
+                String originalFilename = logoFile.getOriginalFilename();
 
-                Path path = Paths.get(UPLOAD_FOLDER + fileName);
+                // Obtener la extensión (.png, .jpg, .jpeg, .webp)
+                String extension = "";
 
-                Files.write(path, logoFile.getBytes());
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
 
+                // Generar un nombre único
+                String fileName = "farmacia_" + System.currentTimeMillis() + extension;
+
+                // Crear la carpeta si no existe
+                Path uploadPath = Paths.get(UPLOAD_FOLDER);
+                Files.createDirectories(uploadPath);
+
+                // Guardar el archivo
+                Path filePath = Paths.get(UPLOAD_FOLDER).resolve(fileName);
+                Files.copy(
+                        logoFile.getInputStream(),
+                        filePath,
+                        StandardCopyOption.REPLACE_EXISTING
+                );
+
+                // Guardar solo el nombre en la BD
                 dto.setLogo(fileName);
             } catch (IOException e) {
                 throw new RuntimeException("Error guardando logo", e);
