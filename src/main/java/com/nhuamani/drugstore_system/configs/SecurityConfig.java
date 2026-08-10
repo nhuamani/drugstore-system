@@ -18,16 +18,13 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(
-            CustomUserDetailsService userDetailsService) {
-
+    public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -47,8 +44,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
 
@@ -67,7 +63,6 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-
                         // =========================
                         // ROLES
                         // =========================
@@ -76,14 +71,12 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
 
-
                         // ADMIN + MANAGER
                         .requestMatchers("/manager/**")
                         .hasAnyRole(
                                 "ADMIN",
                                 "MANAGER"
                         )
-
 
                         // ADMIN + MANAGER + EMPLOYEE
                         .requestMatchers("/employee/**")
@@ -122,37 +115,25 @@ public class SecurityConfig {
                 // =========================
 
                 .formLogin(login -> login
-
                         .loginPage("/login")
-
                         .loginProcessingUrl("/login")
-
                         .defaultSuccessUrl(
                                 "/dashboard",
                                 true
                         )
-
                         .failureUrl("/login?error")
-
                         .permitAll()
                 )
-
 
                 // =========================
                 // LOGOUT
                 // =========================
 
                 .logout(logout -> logout
-
                         .logoutUrl("/logout")
-
-                        .logoutSuccessUrl(
-                                "/login?logout"
-                        )
-
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
-
 
         return http.build();
     }
