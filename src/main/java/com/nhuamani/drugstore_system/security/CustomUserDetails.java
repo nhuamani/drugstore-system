@@ -27,7 +27,7 @@ public class CustomUserDetails implements UserDetails {
 
         for (Role role : user.getRoles()) {
 
-            // Agregar ROLE_ADMIN, ROLE_MANAGER, etc.
+            // Agregar roles: ADMIN, MANAGER, etc.
             authorities.add(
                     new SimpleGrantedAuthority(role.getName())
             );

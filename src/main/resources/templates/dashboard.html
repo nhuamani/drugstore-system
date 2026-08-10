@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Drugstore System</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family:
+                    system-ui,
+                    -apple-system,
+                    BlinkMacSystemFont,
+                    "Segoe UI",
+                    sans-serif;
+
+            background: #f4f6f8;
+            color: #111827;
+        }
+
+
+        /* =========================
+           HEADER
+           ========================= */
+
+        .header {
+            min-height: 64px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 2rem;
+
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header-brand h1 {
+            font-size: 1.2rem;
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            color: #6b7280;
+        }
+
+        .header-user form {
+            margin: 0;
+        }
+
+        .header-user button {
+            padding: 0.55rem 0.9rem;
+
+            border: 0;
+            border-radius: 7px;
+
+            background: #ef4444;
+            color: #ffffff;
+
+            font: inherit;
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           DASHBOARD
+           ========================= */
+
+        .dashboard {
+            width: min(100% - 2rem, 1200px);
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h2 {
+            margin-bottom: 0.4rem;
+
+            font-size: 1.8rem;
+        }
+
+        .dashboard-header p {
+            color: #6b7280;
+        }
+
+
+        /* =========================
+           CARDS
+           ========================= */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 1.25rem;
+        }
+
+        .dashboard-card {
+            padding: 1.5rem;
+
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+
+            box-shadow:
+                    0 4px 15px rgb(0 0 0 / 5%);
+        }
+
+        .dashboard-card h3 {
+            margin-bottom: 0.6rem;
+        }
+
+        .dashboard-card p {
+            margin-bottom: 1.25rem;
+
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .dashboard-card a {
+            color: #2563eb;
+
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .dashboard-card a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 1rem;
+
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 1rem;
+            }
+
+            .header-user {
+                width: 100%;
+
+                justify-content: space-between;
+            }
+
+            .dashboard {
+                padding-top: 1.5rem;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-brand">
+        <h1>Drugstore System</h1>
+    </div>
+
+    <div class="header-user">
+
+        <span>
+<!--            Bienvenido <strong th:text="${#authentication.name}"></strong>-->
+            Bienvenido <strong sec:authentication="name"></strong>
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="dashboard-header">
+
+        <h2>Dashboard</h2>
+
+        <p>
+            Panel principal del sistema.
+        </p>
+
+    </section>
+
+
+    <section class="dashboard-grid">
+
+        <article class="dashboard-card">
+
+            <h3>Usuarios</h3>
+
+            <p>
+                Administración de usuarios
+                del sistema.
+            </p>
+
+            <a th:href="@{/users}">
+                Ver usuarios
+            </a>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <h3>Productos</h3>
+
+            <p>
+                Gestión de productos
+                y medicamentos.
+            </p>
+
+            <a th:href="@{/products}">
+                Ver productos
+            </a>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <h3>Ventas</h3>
+
+            <p>
+                Gestión y consulta
+                de ventas.
+            </p>
+
+            <a th:href="@{/sales}">
+                Ver ventas
+            </a>
+
+        </article>
+
+
+        <article class="dashboard-card">
+
+            <h3>Reportes</h3>
+
+            <p>
+                Consulta de información
+                y estadísticas.
+            </p>
+
+            <a th:href="@{/reports}">
+                Ver reportes
+            </a>
+
+        </article>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>
+

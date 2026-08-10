@@ -10,8 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 
 @Configuration
 @EnableMethodSecurity
@@ -45,7 +43,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(authorize -> authorize
+
                         // Recursos públicos
                         .requestMatchers(
                                 "/login",
@@ -55,9 +54,33 @@ public class SecurityConfig {
                                 "/favicon.ico",
                                 "/webjars/**"
                         ).permitAll()
+
                         // Área administrativa
                         .requestMatchers("/admin/**")
-                        .hasRole("ADMIN")
+                        .hasAuthority("ADMIN")
+
+                        // Área de manager
+                        .requestMatchers("/manager/**")
+                        .hasAnyAuthority("ADMIN", "MANAGER")
+
+                        // Área de empleados
+                        .requestMatchers("/employee/**")
+                        .hasAnyAuthority(
+                                "ADMIN",
+                                "MANAGER",
+                                "EMPLOYEE"
+                        )
+
+                        // Permisos de usuarios
+                        .requestMatchers("/users/create")
+                        .hasAuthority("USER_CREATE")
+
+                        .requestMatchers("/users/edit/**")
+                        .hasAuthority("USER_UPDATE")
+
+                        .requestMatchers("/users/delete/**")
+                        .hasAuthority("USER_DELETE")
+
                         // Todo lo demás requiere autenticación
                         .anyRequest()
                         .authenticated()
