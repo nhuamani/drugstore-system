@@ -1,4 +1,5 @@
-package com.nhuamani.drugstore_system.config;
+package com.nhuamani.drugstore_system.configs;
+
 
 
 import com.nhuamani.drugstore_system.models.Permission;
@@ -24,9 +25,9 @@ public class DataInitializer {
 
         return args -> {
 
-            // =========================
+            // ==========================================
             // PERMISSIONS
-            // =========================
+            // ==========================================
 
             Permission userRead = createPermission(
                     permissionRepository,
@@ -53,9 +54,9 @@ public class DataInitializer {
             );
 
 
-            // =========================
+            // ==========================================
             // ROLES
-            // =========================
+            // ==========================================
 
             Role adminRole = createRole(
                     roleRepository,
@@ -76,9 +77,9 @@ public class DataInitializer {
             );
 
 
-            // =========================
+            // ==========================================
             // ADMIN PERMISSIONS
-            // =========================
+            // ==========================================
 
             adminRole.getPermissions().add(userRead);
             adminRole.getPermissions().add(userCreate);
@@ -88,9 +89,9 @@ public class DataInitializer {
             roleRepository.save(adminRole);
 
 
-            // =========================
+            // ==========================================
             // MANAGER PERMISSIONS
-            // =========================
+            // ==========================================
 
             managerRole.getPermissions().add(userRead);
             managerRole.getPermissions().add(userCreate);
@@ -99,37 +100,52 @@ public class DataInitializer {
             roleRepository.save(managerRole);
 
 
-            // =========================
+            // ==========================================
             // EMPLOYEE PERMISSIONS
-            // =========================
+            // ==========================================
 
             employeeRole.getPermissions().add(userRead);
 
             roleRepository.save(employeeRole);
 
 
-            // =========================
-            // ADMIN USER
-            // =========================
+            // ==========================================
+            // USERS
+            // ==========================================
 
-            if (!userRepository.existsByUsername("admin")) {
+            createUser(
+                    userRepository,
+                    passwordEncoder,
+                    "admin",
+                    "admin@drugstore.com",
+                    "admin123",
+                    adminRole
+            );
 
-                User admin = User.builder()
-                        .username("admin")
-                        .email("admin@drugstore.com")
-                        .password(
-                                passwordEncoder.encode("admin123")
-                        )
-                        .enabled(true)
-                        .build();
+            createUser(
+                    userRepository,
+                    passwordEncoder,
+                    "manager",
+                    "manager@drugstore.com",
+                    "manager123",
+                    managerRole
+            );
 
-                admin.getRoles().add(adminRole);
-
-                userRepository.save(admin);
-            }
+            createUser(
+                    userRepository,
+                    passwordEncoder,
+                    "employee",
+                    "employee@drugstore.com",
+                    "employee123",
+                    employeeRole
+            );
         };
     }
 
+
+    // ==========================================
+    // CREATE ROLE
+    // ==========================================
 
     private Role createRole(
             RoleRepository roleRepository,
@@ -149,6 +165,10 @@ public class DataInitializer {
     }
 
 
+    // ==========================================
+    // CREATE PERMISSION
+    // ==========================================
+
     private Permission createPermission(
             PermissionRepository permissionRepository,
             String name,
@@ -164,5 +184,35 @@ public class DataInitializer {
                                         .build()
                         )
                 );
+    }
+
+
+    // ==========================================
+    // CREATE USER
+    // ==========================================
+
+    private void createUser(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            String username,
+            String email,
+            String password,
+            Role role) {
+
+        if (!userRepository.existsByUsername(username)) {
+
+            User user = User.builder()
+                    .username(username)
+                    .email(email)
+                    .password(
+                            passwordEncoder.encode(password)
+                    )
+                    .enabled(true)
+                    .build();
+
+            user.getRoles().add(role);
+
+            userRepository.save(user);
+        }
     }
 }

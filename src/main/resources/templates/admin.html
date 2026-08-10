@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Administración | Drugstore System</title>
+
+<!--    <link rel="stylesheet" th:href="@{/css/dashboard.css}">-->
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-brand">
+        <h1>Drugstore System</h1>
+    </div>
+
+    <div class="header-user">
+
+        <span>
+            Usuario:
+            <strong th:text="${#authentication.name}">
+                admin
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="dashboard-header">
+
+        <h2>Administración</h2>
+
+        <p>
+            Área exclusiva para administradores.
+        </p>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <h3>Panel de administración</h3>
+
+        <p>
+            Aquí podrás administrar usuarios,
+            roles, permisos y configuración
+            del sistema.
+        </p>
+
+        <a th:href="@{/dashboard}">
+            ← Volver al dashboard
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

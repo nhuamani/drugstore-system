@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manager | Drugstore System</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="header-brand">
+        <h1>Drugstore System</h1>
+    </div>
+
+    <div class="header-user">
+
+        <span>
+            Usuario:
+            <strong th:text="${#authentication.name}">
+                manager
+            </strong>
+        </span>
+
+        <form th:action="@{/logout}"
+              method="post">
+
+            <button type="submit">
+                Cerrar sesión
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+<main class="dashboard">
+
+    <section class="dashboard-header">
+
+        <h2>Manager</h2>
+
+        <p>
+            Área para administradores y managers.
+        </p>
+
+    </section>
+
+
+    <section class="dashboard-card">
+
+        <h3>Panel de operaciones</h3>
+
+        <p>
+            Desde aquí podrás gestionar las
+            operaciones de la farmacia.
+        </p>
+
+        <a th:href="@{/dashboard}">
+            ← Volver al dashboard
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+
+</html>

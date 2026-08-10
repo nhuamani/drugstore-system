@@ -1,15 +1,16 @@
 package com.nhuamani.drugstore_system.configs;
 
 import com.nhuamani.drugstore_system.security.CustomUserDetailsService;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
 @Configuration
 @EnableMethodSecurity
@@ -17,14 +18,19 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
 
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
+    public SecurityConfig(
+            CustomUserDetailsService userDetailsService) {
+
         this.userDetailsService = userDetailsService;
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -39,13 +45,19 @@ public class SecurityConfig {
         return provider;
     }
 
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http) throws Exception {
 
         http
+
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // Recursos públicos
+                        // =========================
+                        // RECURSOS PÚBLICOS
+                        // =========================
+
                         .requestMatchers(
                                 "/login",
                                 "/css/**",
@@ -55,23 +67,37 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-                        // Área administrativa
+
+                        // =========================
+                        // ROLES
+                        // =========================
+
+                        // Solo ADMIN
                         .requestMatchers("/admin/**")
-                        .hasAuthority("ADMIN")
+                        .hasRole("ADMIN")
 
-                        // Área de manager
+
+                        // ADMIN + MANAGER
                         .requestMatchers("/manager/**")
-                        .hasAnyAuthority("ADMIN", "MANAGER")
+                        .hasAnyRole(
+                                "ADMIN",
+                                "MANAGER"
+                        )
 
-                        // Área de empleados
+
+                        // ADMIN + MANAGER + EMPLOYEE
                         .requestMatchers("/employee/**")
-                        .hasAnyAuthority(
+                        .hasAnyRole(
                                 "ADMIN",
                                 "MANAGER",
                                 "EMPLOYEE"
                         )
 
-                        // Permisos de usuarios
+
+                        // =========================
+                        // PERMISOS
+                        // =========================
+
                         .requestMatchers("/users/create")
                         .hasAuthority("USER_CREATE")
 
@@ -81,22 +107,52 @@ public class SecurityConfig {
                         .requestMatchers("/users/delete/**")
                         .hasAuthority("USER_DELETE")
 
-                        // Todo lo demás requiere autenticación
+
+                        // =========================
+                        // RESTO
+                        // =========================
+
                         .anyRequest()
                         .authenticated()
                 )
+
+
+                // =========================
+                // LOGIN
+                // =========================
+
                 .formLogin(login -> login
+
                         .loginPage("/login")
+
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+
+                        .defaultSuccessUrl(
+                                "/dashboard",
+                                true
+                        )
+
                         .failureUrl("/login?error")
+
                         .permitAll()
                 )
+
+
+                // =========================
+                // LOGOUT
+                // =========================
+
                 .logout(logout -> logout
+
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+
+                        .logoutSuccessUrl(
+                                "/login?logout"
+                        )
+
                         .permitAll()
                 );
+
 
         return http.build();
     }
