@@ -108,6 +108,9 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated()
                 )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/403")
+                )
 
 
                 // =========================
