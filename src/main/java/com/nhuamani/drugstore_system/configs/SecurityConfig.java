@@ -12,48 +12,41 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableMethodSecurity
 public class SecurityConfig {
-
-    private final CustomUserDetailsService userDetailsService;
-
-    public SecurityConfig(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider(
+            CustomUserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder
+    ) {
 
         DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(
-                        userDetailsService
-                );
+                new DaoAuthenticationProvider(userDetailsService);
 
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(passwordEncoder);
 
         return provider;
     }
 
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            AuthenticationProvider authenticationProvider
+    ) throws Exception {
 
         http
+                .authenticationProvider(authenticationProvider)
 
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // =========================
-                        // RECURSOS PÚBLICOS
-                        // =========================
-
+                        // Recursos públicos
                         .requestMatchers(
                                 "/login",
                                 "/403",
@@ -64,20 +57,13 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-                        // =========================
-                        // ROLES
-                        // =========================
-
-                        // Solo ADMIN
+                        // ADMIN
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
 
                         // ADMIN + MANAGER
                         .requestMatchers("/manager/**")
-                        .hasAnyRole(
-                                "ADMIN",
-                                "MANAGER"
-                        )
+                        .hasAnyRole("ADMIN", "MANAGER")
 
                         // ADMIN + MANAGER + EMPLOYEE
                         .requestMatchers("/employee/**")
@@ -87,11 +73,7 @@ public class SecurityConfig {
                                 "EMPLOYEE"
                         )
 
-
-                        // =========================
-                        // PERMISOS
-                        // =========================
-
+                        // Permisos
                         .requestMatchers("/users/create")
                         .hasAuthority("USER_CREATE")
 
@@ -101,41 +83,29 @@ public class SecurityConfig {
                         .requestMatchers("/users/delete/**")
                         .hasAuthority("USER_DELETE")
 
-
-                        // =========================
-                        // RESTO
-                        // =========================
-
+                        // Resto
                         .anyRequest()
                         .authenticated()
                 )
+
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/403")
                 )
 
-
-                // =========================
-                // LOGIN
-                // =========================
-
                 .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl(
-                                "/dashboard",
-                                true
-                        )
+                        .defaultSuccessUrl("/dashboard", true)
                         .failureUrl("/login?error")
                         .permitAll()
                 )
 
-                // =========================
-                // LOGOUT
-                // =========================
-
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
                 );
 
