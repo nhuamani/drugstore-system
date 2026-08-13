@@ -1,11 +1,7 @@
 package com.nhuamani.drugstore_system.configs;
 
-import com.nhuamani.drugstore_system.security.CustomUserDetailsService;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,31 +18,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(
-            CustomUserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder
-    ) {
-
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(userDetailsService);
-
-        provider.setPasswordEncoder(passwordEncoder);
-
-        return provider;
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            AuthenticationProvider authenticationProvider
+            HttpSecurity http
     ) throws Exception {
 
         http
-                .authenticationProvider(authenticationProvider)
-
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // Recursos públicos
+                        // =========================
+                        // RECURSOS PÚBLICOS
+                        // =========================
+
                         .requestMatchers(
                                 "/login",
                                 "/403",
@@ -57,7 +39,10 @@ public class SecurityConfig {
                                 "/webjars/**"
                         ).permitAll()
 
-                        // ADMIN
+                        // =========================
+                        // ROLES
+                        // =========================
+
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
 
@@ -73,7 +58,10 @@ public class SecurityConfig {
                                 "EMPLOYEE"
                         )
 
-                        // Permisos
+                        // =========================
+                        // PERMISOS
+                        // =========================
+
                         .requestMatchers("/users/create")
                         .hasAuthority("USER_CREATE")
 
@@ -83,14 +71,25 @@ public class SecurityConfig {
                         .requestMatchers("/users/delete/**")
                         .hasAuthority("USER_DELETE")
 
-                        // Resto
+                        // =========================
+                        // RESTO
+                        // =========================
+
                         .anyRequest()
                         .authenticated()
                 )
 
+                // =========================
+                // ACCESS DENIED
+                // =========================
+
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/403")
                 )
+
+                // =========================
+                // LOGIN
+                // =========================
 
                 .formLogin(login -> login
                         .loginPage("/login")
@@ -99,6 +98,10 @@ public class SecurityConfig {
                         .failureUrl("/login?error")
                         .permitAll()
                 )
+
+                // =========================
+                // LOGOUT
+                // =========================
 
                 .logout(logout -> logout
                         .logoutUrl("/logout")
