@@ -11,22 +11,26 @@ spring:
       minimum-idle: 1
       connection-timeout: 30000
 
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    show-sql: false
+
+    properties:
       hibernate:
-        ddl-auto: validate   # create | create-drop | update | validate | none
-      open-in-view: false
-      show-sql: false
-      properties:
-        hibernate:
-          format_sql: false
-          dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
 
-    thymeleaf:
-      cache: false
+  thymeleaf:
+    cache: true
 
-    sql:
-      init:
-        mode: always
+  sql:
+    init:
+      mode: never
+
+server:
+  port: ${PORT:8080}
 
 app:
   upload:
@@ -34,6 +38,6 @@ app:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.SQL: INFO
+    org.hibernate.orm.jdbc.bind: OFF
     org.springframework.security: INFO
