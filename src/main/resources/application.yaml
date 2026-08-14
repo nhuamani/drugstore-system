@@ -7,3 +7,4 @@ spring:
 server:
   port: ${PORT:8080}
 
+defer-datasource-initialization: true
