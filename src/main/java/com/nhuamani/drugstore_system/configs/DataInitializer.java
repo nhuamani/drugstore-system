@@ -1,7 +1,5 @@
 package com.nhuamani.drugstore_system.configs;
 
-
-
 import com.nhuamani.drugstore_system.models.Permission;
 import com.nhuamani.drugstore_system.models.Role;
 import com.nhuamani.drugstore_system.models.User;
@@ -85,7 +83,6 @@ public class DataInitializer {
             adminRole.getPermissions().add(userCreate);
             adminRole.getPermissions().add(userUpdate);
             adminRole.getPermissions().add(userDelete);
-
             roleRepository.save(adminRole);
 
 
@@ -96,7 +93,6 @@ public class DataInitializer {
             managerRole.getPermissions().add(userRead);
             managerRole.getPermissions().add(userCreate);
             managerRole.getPermissions().add(userUpdate);
-
             roleRepository.save(managerRole);
 
 
@@ -105,7 +101,6 @@ public class DataInitializer {
             // ==========================================
 
             employeeRole.getPermissions().add(userRead);
-
             roleRepository.save(employeeRole);
 
 

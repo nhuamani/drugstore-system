@@ -116,7 +116,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
         Optional<Configuration> result = configurationRepository.findBySettingKey(key);
 
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             Configuration configuration = result.get();
 
             System.out.println("Actualizando: " + configuration.getSettingKey() + " = " + value);

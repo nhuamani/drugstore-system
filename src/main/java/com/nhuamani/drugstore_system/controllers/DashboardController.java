@@ -15,6 +15,7 @@ public class DashboardController {
         System.out.println("AUTHORITIES: " + authentication.getAuthorities());
         System.out.println("================================");
 
-        return "dashboard";
+
+        return "dashboard/index";
     }
 }

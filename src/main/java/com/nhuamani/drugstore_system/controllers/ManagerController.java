@@ -1,4 +1,3 @@
-
 package com.nhuamani.drugstore_system.controllers;
 
 import org.springframework.stereotype.Controller;

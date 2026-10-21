@@ -13,4 +13,5 @@ VALUES
     ),
     ('telefono', '979 352 767', 'Teléfono principal'),
     ('moneda', 'S/', 'Símbolo de moneda'),
-    ('igv', '18', 'Porcentaje de IGV');
+    ('igv', '18', 'Porcentaje de IGV'),
+    ('logo', '', 'Nombre del archivo del logo de la empresa');

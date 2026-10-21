@@ -48,7 +48,7 @@
                                         <img id="logoPreview"
                                              th:src="${configuration.logo != null && !configuration.logo.isEmpty()}
                                             ? @{/uploads/logos/{file}(file=${configuration.logo})}
-                                            : @{/assets/img/default-logo.png}">
+                                            : @{/img/default-logo.png}">
 
                                         <div class="overlay">
                                             <i class="bi bi-camera-fill"></i>
@@ -179,7 +179,6 @@
                 </div>
             </div>
         </div>
-
     </main>
 
     <th:block layout:fragment="scripts">

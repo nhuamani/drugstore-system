@@ -25,24 +25,19 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // =========================
                         // RECURSOS PÚBLICOS
-                        // =========================
-
                         .requestMatchers(
                                 "/login",
                                 "/403",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**",
+                                "/adminlte/**",
+                                "/img/**",
                                 "/favicon.ico",
                                 "/webjars/**"
                         ).permitAll()
 
-                        // =========================
                         // ROLES
-                        // =========================
-
                         .requestMatchers("/admin/**")
                         .hasRole("ADMIN")
 
@@ -58,10 +53,7 @@ public class SecurityConfig {
                                 "EMPLOYEE"
                         )
 
-                        // =========================
                         // PERMISOS
-                        // =========================
-
                         .requestMatchers("/users/create")
                         .hasAuthority("USER_CREATE")
 
@@ -71,26 +63,17 @@ public class SecurityConfig {
                         .requestMatchers("/users/delete/**")
                         .hasAuthority("USER_DELETE")
 
-                        // =========================
                         // RESTO
-                        // =========================
-
                         .anyRequest()
                         .authenticated()
                 )
 
-                // =========================
                 // ACCESS DENIED
-                // =========================
-
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/403")
                 )
 
-                // =========================
                 // LOGIN
-                // =========================
-
                 .formLogin(login -> login
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
@@ -99,10 +82,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
 
-                // =========================
                 // LOGOUT
-                // =========================
-
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")

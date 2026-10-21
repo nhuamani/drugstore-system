@@ -15,6 +15,7 @@ spring:
     hibernate:
       ddl-auto: update   # create | create-drop | update | validate | none
     show-sql: true
+    defer-datasource-initialization: true
 
   thymeleaf:
     cache: false
