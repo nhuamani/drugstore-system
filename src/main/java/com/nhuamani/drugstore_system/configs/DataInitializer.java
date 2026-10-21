@@ -113,6 +113,8 @@ public class DataInitializer {
                     passwordEncoder,
                     "admin",
                     "admin@drugstore.com",
+                    "Lucas",
+                    "Hernandez",
                     "admin123",
                     adminRole
             );
@@ -122,6 +124,8 @@ public class DataInitializer {
                     passwordEncoder,
                     "manager",
                     "manager@drugstore.com",
+                    "Pedro",
+                    "Perez",
                     "manager123",
                     managerRole
             );
@@ -131,6 +135,8 @@ public class DataInitializer {
                     passwordEncoder,
                     "employee",
                     "employee@drugstore.com",
+                    "Lina",
+                    "Gomez",
                     "employee123",
                     employeeRole
             );
@@ -191,6 +197,8 @@ public class DataInitializer {
             PasswordEncoder passwordEncoder,
             String username,
             String email,
+            String firstName,
+            String lastName,
             String password,
             Role role) {
 
@@ -199,6 +207,8 @@ public class DataInitializer {
             User user = User.builder()
                     .username(username)
                     .email(email)
+                    .firstName(firstName)
+                    .lastName(lastName)
                     .password(
                             passwordEncoder.encode(password)
                     )

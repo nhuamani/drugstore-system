@@ -16,6 +16,6 @@ public class DashboardController {
         System.out.println("================================");
 
 
-        return "dashboard/index";
+        return "dashboard/dashboard";
     }
 }

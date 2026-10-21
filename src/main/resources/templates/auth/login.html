@@ -74,9 +74,25 @@
                     <p class="login-box-msg">Sign in to start your session</p>
 
                     <!-- Mensaje de error -->
-                    <div th:if="${param.error}" class="alert alert-danger"> Usuario o contraseña incorrectos. </div>
+                    <div th:if="${param.error}"
+                         class="alert alert-danger alert-dismissible fade show"
+                         role="alert">
+                        Usuario o contraseña incorrectos.
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Cerrar"></button>
+                    </div>
                     <!-- Mensaje de logout -->
-                    <div th:if="${param.logout}" class="alert alert-success"> Has cerrado sesión correctamente. </div>
+                    <div th:if="${param.logout}"
+                         class="alert alert-success alert-dismissible fade show"
+                         role="alert">
+                        Has cerrado sesión correctamente.
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Cerrar"></button>
+                    </div>
 
                     <form th:action="@{/login}" method="post">
                         <div class="input-group mb-3">
@@ -126,10 +142,10 @@
                     </form>
 
                     <p class="mb-1">
-                        <a href="forgot-password.html">I forgot my password</a>
+                        <a href="forgot-password.html">Olvidé mi contraseña</a>
                     </p>
                     <p class="mb-0">
-                        <a href="register.html" class="text-center"> Register a new membership </a>
+                        <a href="register.html" class="text-center"> Registrar una nueva membresía </a>
                     </p>
                 </div>
                 <!-- /.login-card-body -->

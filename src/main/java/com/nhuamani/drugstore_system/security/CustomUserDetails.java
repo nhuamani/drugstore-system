@@ -20,6 +20,14 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
