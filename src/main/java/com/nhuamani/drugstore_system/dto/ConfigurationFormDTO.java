@@ -1,4 +1,4 @@
-package com.nhuamani.drugstore_system.dtos;
+package com.nhuamani.drugstore_system.dto;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.nhuamani.drugstore_system.services.impl;
 
-import com.nhuamani.drugstore_system.dtos.ConfigurationFormDTO;
+import com.nhuamani.drugstore_system.dto.ConfigurationFormDTO;
 import com.nhuamani.drugstore_system.models.Configuration;
 import com.nhuamani.drugstore_system.repositories.ConfigurationRepository;
 import com.nhuamani.drugstore_system.services.ConfigurationService;

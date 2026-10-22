@@ -2,6 +2,7 @@ package com.nhuamani.drugstore_system.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -54,18 +55,28 @@ public class SecurityConfig {
                         )
 
                         // PERMISOS
+                        .requestMatchers(HttpMethod.POST, "/users")
+                        .hasAuthority("USER_CREATE")
+
+                        .requestMatchers(HttpMethod.POST, "/users/edit/**")
+                        .hasAuthority("USER_UPDATE")
+
+                        .requestMatchers(HttpMethod.POST, "/users/*/status")
+                        .hasRole("ADMIN")
+
                         .requestMatchers("/users/create")
                         .hasAuthority("USER_CREATE")
 
                         .requestMatchers("/users/edit/**")
                         .hasAuthority("USER_UPDATE")
 
-                        .requestMatchers("/users/delete/**")
-                        .hasAuthority("USER_DELETE")
+                        .requestMatchers("/users", "/users/**")
+                        .hasAuthority("USER_READ")
 
                         // RESTO
                         .anyRequest()
                         .authenticated()
+
                 )
 
                 // ACCESS DENIED

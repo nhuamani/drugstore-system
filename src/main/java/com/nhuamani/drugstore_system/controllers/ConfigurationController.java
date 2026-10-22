@@ -1,6 +1,6 @@
 package com.nhuamani.drugstore_system.controllers;
 
-import com.nhuamani.drugstore_system.dtos.ConfigurationFormDTO;
+import com.nhuamani.drugstore_system.dto.ConfigurationFormDTO;
 import com.nhuamani.drugstore_system.services.ConfigurationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
