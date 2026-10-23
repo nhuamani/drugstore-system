@@ -1,5 +1,6 @@
 package com.nhuamani.drugstore_system.controllers;
 
+import com.nhuamani.drugstore_system.dto.PasswordChangeDTO;
 import com.nhuamani.drugstore_system.dto.UserCreateDTO;
 import com.nhuamani.drugstore_system.dto.UserUpdateDTO;
 import com.nhuamani.drugstore_system.models.Role;
@@ -162,6 +163,50 @@ public class UserController {
                 enabled
                         ? "Cuenta habilitada correctamente."
                         : "Cuenta deshabilitada correctamente."
+        );
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{id}/password")
+    public String passwordForm(
+            @PathVariable Long id,
+            Model model) {
+
+        User user = userService.findById(id);
+
+        model.addAttribute("pageTitle", "Cambiar contraseña");
+        model.addAttribute("userId", user.getId());
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("passwordChangeDTO", new PasswordChangeDTO());
+
+        return "users/password";
+    }
+
+    @PostMapping("/{id}/password")
+    public String changePassword(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("passwordChangeDTO")
+            PasswordChangeDTO dto,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            User user = userService.findById(id);
+
+            model.addAttribute("pageTitle", "Cambiar contraseña");
+            model.addAttribute("userId", user.getId());
+            model.addAttribute("username", user.getUsername());
+
+            return "users/password";
+        }
+
+        userService.changePassword(id, dto.getPassword());
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "Contraseña actualizada correctamente."
         );
 
         return "redirect:/users";

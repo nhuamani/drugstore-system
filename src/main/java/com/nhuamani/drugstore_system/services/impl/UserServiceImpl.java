@@ -83,6 +83,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void changePassword(Long id, String newPassword) {
+        User user = findById(id);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
     private Role findRole(Long roleId) {
         return roleRepository.findById(roleId)
                 .orElseThrow(() ->

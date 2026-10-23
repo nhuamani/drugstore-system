@@ -73,6 +73,12 @@ public class SecurityConfig {
                         .requestMatchers("/users", "/users/**")
                         .hasAuthority("USER_READ")
 
+                        .requestMatchers(HttpMethod.GET, "/users/*/password")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/users/*/password")
+                        .hasRole("ADMIN")
+
                         // RESTO
                         .anyRequest()
                         .authenticated()

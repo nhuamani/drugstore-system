@@ -17,4 +17,6 @@ public interface UserService {
     User update(Long id, UserUpdateDTO dto);
 
     User changeEnabledStatus(Long id, boolean enabled);
+
+    void changePassword(Long id, String newPassword);
 }
