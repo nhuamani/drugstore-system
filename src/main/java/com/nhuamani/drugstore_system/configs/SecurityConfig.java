@@ -55,23 +55,10 @@ public class SecurityConfig {
                         )
 
                         // PERMISOS
-                        .requestMatchers(HttpMethod.POST, "/users")
-                        .hasAuthority("USER_CREATE")
-
-                        .requestMatchers(HttpMethod.POST, "/users/edit/**")
-                        .hasAuthority("USER_UPDATE")
+                        .requestMatchers("/users", "/users/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/users/*/status")
                         .hasRole("ADMIN")
-
-                        .requestMatchers("/users/create")
-                        .hasAuthority("USER_CREATE")
-
-                        .requestMatchers("/users/edit/**")
-                        .hasAuthority("USER_UPDATE")
-
-                        .requestMatchers("/users", "/users/**")
-                        .hasAuthority("USER_READ")
 
                         .requestMatchers(HttpMethod.GET, "/users/*/password")
                         .hasRole("ADMIN")
