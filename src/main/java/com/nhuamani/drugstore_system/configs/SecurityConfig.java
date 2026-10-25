@@ -43,11 +43,11 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
 
                         // ADMIN + MANAGER
-                        .requestMatchers("/manager/**")
+                        .requestMatchers("/configurations/**")
                         .hasAnyRole("ADMIN", "MANAGER")
 
                         // ADMIN + MANAGER + EMPLOYEE
-                        .requestMatchers("/employee/**")
+                        .requestMatchers("/dashboard/**")
                         .hasAnyRole(
                                 "ADMIN",
                                 "MANAGER",
@@ -65,6 +65,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/users/*/password")
                         .hasRole("ADMIN")
+
+                        .requestMatchers("/configurations").hasRole("ADMIN")
 
                         // RESTO
                         .anyRequest()
