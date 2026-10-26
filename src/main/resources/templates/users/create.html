@@ -4,248 +4,231 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main}">
 
-<head>
-    <title>Nuevo usuario</title>
-</head>
+    <main layout:fragment="main">
 
-<main layout:fragment="main">
+        <!-- Encabezado -->
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="mb-0">Nuevo usuario</h3>
+                    </div>
 
-    <!-- Encabezado -->
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3 class="mb-0">Nuevo usuario</h3>
-                </div>
-
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item">
-                            <a th:href="@{/dashboard}">Inicio</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a th:href="@{/users}">Usuarios</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Nuevo usuario
-                        </li>
-                    </ol>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-end">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/dashboard}">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/users}">Usuarios</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Nuevo usuario
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Formulario -->
-    <div class="app-content">
-        <div class="container-fluid">
+        <!-- Formulario -->
+        <div class="app-content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="bi bi-person-plus me-2"></i>
+                            Datos del usuario
+                        </h3>
+                    </div>
 
-            <div class="card card-primary card-outline">
+                    <form th:action="@{/users}"
+                          th:object="${userCreateDTO}"
+                          method="post">
+                        <div class="card-body">
+                            <!-- Mensaje de error -->
+                            <div th:if="${errorMessage}"
+                                 class="alert alert-danger"
+                                 role="alert"
+                                 th:text="${errorMessage}">
+                            </div>
 
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="bi bi-person-plus me-2"></i>
-                        Datos del usuario
-                    </h3>
+                            <!-- Errores de validación -->
+                            <div th:if="${#fields.hasAnyErrors()}"
+                                 class="alert alert-danger"
+                                 role="alert">
+                                Revisa los campos indicados antes de continuar.
+                            </div>
+
+                            <div class="row">
+
+                                <!-- Nombre -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">
+                                        Nombres
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="text"
+                                           id="firstName"
+                                           th:field="*{firstName}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
+                                           placeholder="Ej. Juan"
+                                           maxlength="50"
+                                           autocomplete="given-name"
+                                           required>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('firstName')}"
+                                         th:errors="*{firstName}">
+                                    </div>
+                                </div>
+
+                                <!-- Apellidos -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">
+                                        Apellidos
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="text"
+                                           id="lastName"
+                                           th:field="*{lastName}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''"
+                                           placeholder="Ej. Pérez García"
+                                           maxlength="50"
+                                           autocomplete="family-name"
+                                           required>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('lastName')}"
+                                         th:errors="*{lastName}">
+                                    </div>
+                                </div>
+
+                                <!-- Correo -->
+                                <div class="col-md-12 mb-3">
+                                    <label for="email" class="form-label">
+                                        Correo electrónico
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="email"
+                                           id="email"
+                                           th:field="*{email}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
+                                           placeholder="usuario@ejemplo.com"
+                                           maxlength="100"
+                                           autocomplete="email"
+                                           required>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('email')}"
+                                         th:errors="*{email}">
+                                    </div>
+                                </div>
+
+                                <!-- Nombre de usuario -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label">
+                                        Nombre de usuario
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="text"
+                                           id="username"
+                                           th:field="*{username}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
+                                           placeholder="Ej. jperez"
+                                           maxlength="50"
+                                           autocomplete="username"
+                                           required>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('username')}"
+                                         th:errors="*{username}">
+                                    </div>
+                                </div>
+
+                                <!-- Rol -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="roleId" class="form-label">
+                                        Rol
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <select id="roleId"
+                                            th:field="*{roleId}"
+                                            class="form-select"
+                                            th:classappend="${#fields.hasErrors('roleId')} ? 'is-invalid' : ''"
+                                            required>
+
+                                        <option value="">Selecciona un rol</option>
+
+                                        <option th:each="role : ${roles}"
+                                                th:value="${role.id}"
+                                                th:text="${#strings.replace(role.name, 'ROLE_', '')}">
+                                        </option>
+                                    </select>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('roleId')}"
+                                         th:errors="*{roleId}">
+                                    </div>
+                                </div>
+
+                                <!-- Contraseña -->
+                                <div class="col-md-12 mb-3">
+                                    <label for="password" class="form-label">
+                                        Contraseña
+                                        <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="password"
+                                           id="password"
+                                           th:field="*{password}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
+                                           placeholder="Mínimo 8 caracteres"
+                                           minlength="8"
+                                           maxlength="72"
+                                           autocomplete="new-password"
+                                           required>
+
+                                    <div class="invalid-feedback"
+                                         th:if="${#fields.hasErrors('password')}"
+                                         th:errors="*{password}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="text-muted small mb-0">
+                                Los campos marcados con
+                                <span class="text-danger">*</span>
+                                son obligatorios.
+                            </p>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="card-footer d-flex justify-content-end gap-2">
+                            <a th:href="@{/users}"
+                               class="btn btn-secondary">
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Cancelar
+                            </a>
+
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-person-check me-1"></i>
+                                Crear usuario
+                            </button>
+                        </div>
+                    </form>
                 </div>
-
-                <form th:action="@{/users}"
-                      th:object="${userCreateDTO}"
-                      method="post">
-
-                    <div class="card-body">
-
-                        <!-- Mensaje de error -->
-                        <div th:if="${errorMessage}"
-                             class="alert alert-danger"
-                             role="alert"
-                             th:text="${errorMessage}">
-                        </div>
-
-                        <!-- Errores de validación -->
-                        <div th:if="${#fields.hasAnyErrors()}"
-                             class="alert alert-danger"
-                             role="alert">
-                            Revisa los campos indicados antes de continuar.
-                        </div>
-
-                        <div class="row">
-
-                            <!-- Nombre -->
-                            <div class="col-md-6 mb-3">
-                                <label for="firstName" class="form-label">
-                                    Nombres
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                       id="firstName"
-                                       th:field="*{firstName}"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('firstName')} ? 'is-invalid' : ''"
-                                       placeholder="Ej. Juan"
-                                       maxlength="50"
-                                       autocomplete="given-name"
-                                       required>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('firstName')}"
-                                     th:errors="*{firstName}">
-                                </div>
-                            </div>
-
-                            <!-- Apellidos -->
-                            <div class="col-md-6 mb-3">
-                                <label for="lastName" class="form-label">
-                                    Apellidos
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                       id="lastName"
-                                       th:field="*{lastName}"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('lastName')} ? 'is-invalid' : ''"
-                                       placeholder="Ej. Pérez García"
-                                       maxlength="50"
-                                       autocomplete="family-name"
-                                       required>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('lastName')}"
-                                     th:errors="*{lastName}">
-                                </div>
-                            </div>
-
-                            <!-- Correo -->
-                            <div class="col-md-12 mb-3">
-                                <label for="email" class="form-label">
-                                    Correo electrónico
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="email"
-                                       id="email"
-                                       th:field="*{email}"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
-                                       placeholder="usuario@ejemplo.com"
-                                       maxlength="100"
-                                       autocomplete="email"
-                                       required>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('email')}"
-                                     th:errors="*{email}">
-                                </div>
-                            </div>
-
-                            <!-- Nombre de usuario -->
-                            <div class="col-md-6 mb-3">
-                                <label for="username" class="form-label">
-                                    Nombre de usuario
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="text"
-                                       id="username"
-                                       th:field="*{username}"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
-                                       placeholder="Ej. jperez"
-                                       maxlength="50"
-                                       autocomplete="username"
-                                       required>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('username')}"
-                                     th:errors="*{username}">
-                                </div>
-                            </div>
-
-                            <!-- Rol -->
-                            <div class="col-md-6 mb-3">
-                                <label for="roleId" class="form-label">
-                                    Rol
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <select id="roleId"
-                                        th:field="*{roleId}"
-                                        class="form-select"
-                                        th:classappend="${#fields.hasErrors('roleId')} ? 'is-invalid' : ''"
-                                        required>
-
-                                    <option value="">Selecciona un rol</option>
-
-                                    <option th:each="role : ${roles}"
-                                            th:value="${role.id}"
-                                            th:text="${#strings.replace(role.name, 'ROLE_', '')}">
-                                    </option>
-                                </select>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('roleId')}"
-                                     th:errors="*{roleId}">
-                                </div>
-                            </div>
-
-                            <!-- Contraseña -->
-                            <div class="col-md-12 mb-3">
-                                <label for="password" class="form-label">
-                                    Contraseña
-                                    <span class="text-danger">*</span>
-                                </label>
-
-                                <input type="password"
-                                       id="password"
-                                       th:field="*{password}"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
-                                       placeholder="Mínimo 8 caracteres"
-                                       minlength="8"
-                                       maxlength="72"
-                                       autocomplete="new-password"
-                                       required>
-
-                                <div class="invalid-feedback"
-                                     th:if="${#fields.hasErrors('password')}"
-                                     th:errors="*{password}">
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <p class="text-muted small mb-0">
-                            Los campos marcados con
-                            <span class="text-danger">*</span>
-                            son obligatorios.
-                        </p>
-
-                    </div>
-
-                    <!-- Acciones -->
-                    <div class="card-footer d-flex justify-content-end gap-2">
-
-                        <a th:href="@{/users}"
-                           class="btn btn-secondary">
-                            <i class="bi bi-arrow-left me-1"></i>
-                            Cancelar
-                        </a>
-
-                        <button type="submit" class="btn btn-success">
-                            <i class="bi bi-person-check me-1"></i>
-                            Crear usuario
-                        </button>
-
-                    </div>
-
-                </form>
-
             </div>
-
         </div>
-    </div>
-
-</main>
-
+    </main>
 </html>

@@ -25,7 +25,7 @@ public class ConfigurationController {
         ConfigurationFormDTO configuration = configurationService.getConfiguration();
 
         model.addAttribute("configuration", configuration);
-        model.addAttribute("title", "Ajustes de Empresa");
+        model.addAttribute("pageTitle", "Ajustes de Empresa");
         model.addAttribute("singular_name", "Configuración");
         model.addAttribute("name_plural", "Configuraciones");
 

@@ -5,314 +5,308 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layout/main}">
 
-<head>
-    <title>Gestión de usuarios</title>
-</head>
+    <main layout:fragment="main">
 
+        <!-- Encabezado -->
+        <div class="app-content-header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="mb-0">Gestión de usuarios</h3>
+                    </div>
 
-<main layout:fragment="main">
-
-    <!-- Encabezado -->
-    <div class="app-content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3 class="mb-0">Gestión de usuarios</h3>
-                </div>
-
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-end">
-                        <li class="breadcrumb-item">
-                            <a th:href="@{/dashboard}">Inicio</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Usuarios
-                        </li>
-                    </ol>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-end">
+                            <li class="breadcrumb-item">
+                                <a th:href="@{/dashboard}">Inicio</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Usuarios
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Contenido -->
-    <div class="app-content">
-        <div class="container-fluid">
+        <!-- Contenido -->
+        <div class="app-content">
+            <div class="container-fluid">
 
-            <!-- Mensajes de resultado -->
-            <div th:if="${successMessage}"
-                 class="alert alert-success alert-dismissible fade show"
-                 role="alert">
-                <i class="bi bi-check-circle me-2"></i>
-                <span th:text="${successMessage}"></span>
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Cerrar"></button>
-            </div>
-
-            <div th:if="${errorMessage}"
-                 class="alert alert-danger alert-dismissible fade show"
-                 role="alert">
-                <i class="bi bi-exclamation-triangle me-2"></i>
-                <span th:text="${errorMessage}"></span>
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert"
-                        aria-label="Cerrar"></button>
-            </div>
-
-            <!-- Tarjeta principal -->
-            <div class="card">
-
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-                        <h3 class="card-title mb-0">
-                            <i class="bi bi-people me-2"></i>
-                            Usuarios registrados
-                        </h3>
-
-                        <a th:href="@{/users/create}"
-                           sec:authorize="hasAuthority('USER_CREATE')"
-                           class="btn btn-primary btn-sm">
-                            <i class="bi bi-person-plus me-1"></i>
-                            Nuevo usuario
-                        </a>
-
-                    </div>
+                <!-- Mensajes de resultado -->
+                <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show"
+                     role="alert">
+                    <i class="bi bi-check-circle me-2"></i>
+                    <span th:text="${successMessage}"></span>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Cerrar"></button>
                 </div>
 
-                <div class="card-body">
+                <div th:if="${errorMessage}"
+                     class="alert alert-danger alert-dismissible fade show"
+                     role="alert">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span th:text="${errorMessage}"></span>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Cerrar"></button>
+                </div>
 
-                    <!-- Buscador en el navegador -->
-                    <div class="row mb-3">
-                        <div class="col-md-6 col-lg-4 ms-auto">
-                            <label for="userSearch" class="form-label">
-                                Buscar usuario
-                            </label>
+                <!-- Tarjeta principal -->
+                <div class="card">
 
-                            <input type="search"
-                                   id="userSearch"
-                                   class="form-control"
-                                   placeholder="Nombre, usuario o correo..."
-                                   autocomplete="off">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                            <h3 class="card-title mb-0">
+                                <i class="bi bi-people me-2"></i>
+                                Usuarios registrados
+                            </h3>
+
+                            <a th:href="@{/users/create}"
+                               sec:authorize="hasAuthority('USER_CREATE')"
+                               class="btn btn-primary btn-sm">
+                                <i class="bi bi-person-plus me-1"></i>
+                                Nuevo usuario
+                            </a>
+
                         </div>
                     </div>
 
-                    <!-- Tabla -->
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover align-middle"
-                               id="usersTable">
+                    <div class="card-body">
 
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Nombre completo</th>
-                                <th scope="col">Usuario</th>
-                                <th scope="col">Rol</th>
-                                <th scope="col" class="text-center">Estado</th>
-                                <th scope="col" class="text-center">Acciones</th>
-                            </tr>
-                            </thead>
+                        <!-- Buscador en el navegador -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 col-lg-4 ms-auto">
+                                <label for="userSearch" class="form-label">
+                                    Buscar usuario
+                                </label>
 
-                            <tbody>
+                                <input type="search"
+                                       id="userSearch"
+                                       class="form-control"
+                                       placeholder="Nombre, usuario o correo..."
+                                       autocomplete="off">
+                            </div>
+                        </div>
 
-                            <tr th:each="user, iterStat : ${users}"
-                                th:attr="data-user-row=${user.id}">
+                        <!-- Tabla -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle"
+                                   id="usersTable">
 
-                                <td th:text="${iterStat.count}">1</td>
+                                <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Nombre completo</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Rol</th>
+                                    <th scope="col" class="text-center">Estado</th>
+                                    <th scope="col" class="text-center">Acciones</th>
+                                </tr>
+                                </thead>
 
-                                <td>
-                                    <span th:text="${user.firstName + ' ' + user.lastName}">
-                                        Nombre Apellido
-                                    </span>
-                                    <small class="d-block text-muted"
-                                           th:text="${user.email}">
-                                        usuario@example.com
-                                    </small>
-                                </td>
+                                <tbody>
 
-                                <td>
-                                    <span class="badge text-bg-info" th:text="${user.username}">
-                                        usuario
-                                    </span>
-                                </td>
+                                <tr th:each="user, iterStat : ${users}"
+                                    th:attr="data-user-row=${user.id}">
 
-                                <td>
-                                    <th:block th:each="role, roleStat : ${user.roles}">
-                                        <span class="badge text-bg-secondary me-1"
-                                              th:text="${#strings.replace(role.name, 'ROLE_', '')}">
-                                            USER
+                                    <td th:text="${iterStat.count}">1</td>
+
+                                    <td>
+                                        <span th:text="${user.firstName + ' ' + user.lastName}">
+                                            Nombre Apellido
                                         </span>
-                                    </th:block>
-                                </td>
+                                        <small class="d-block text-muted"
+                                               th:text="${user.email}">
+                                            usuario@example.com
+                                        </small>
+                                    </td>
 
-                                <td class="text-center">
-                                    <span th:if="${user.enabled}"
-                                          class="badge text-bg-success">
-                                        <i class="bi bi-check-circle me-1"></i>
-                                        Habilitado
-                                    </span>
+                                    <td>
+                                        <span class="badge text-bg-info" th:text="${user.username}">
+                                            usuario
+                                        </span>
+                                    </td>
 
-                                    <span th:unless="${user.enabled}"
-                                          class="badge text-bg-danger">
-                                        <i class="bi bi-x-circle me-1"></i>
-                                        Deshabilitado
-                                    </span>
-                                </td>
+                                    <td>
+                                        <th:block th:each="role, roleStat : ${user.roles}">
+                                            <span class="badge text-bg-secondary me-1"
+                                                  th:text="${#strings.replace(role.name, 'ROLE_', '')}">
+                                                USER
+                                            </span>
+                                        </th:block>
+                                    </td>
 
-                                <td class="text-center">
-                                    <div class="d-inline-flex gap-1">
-
-                                        <!-- Editar -->
-                                        <a th:href="@{/users/edit/{id}(id=${user.id})}"
-                                           sec:authorize="hasAuthority('USER_UPDATE')"
-                                           class="btn btn-outline-primary btn-sm"
-                                           title="Editar usuario"
-                                           aria-label="Editar usuario">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-
-                                        <a th:href="@{/users/{id}/password(id=${user.id})}"
-                                           sec:authorize="hasRole('ADMIN')"
-                                           class="btn btn-outline-warning btn-sm"
-                                           title="Cambiar contraseña"
-                                           aria-label="Cambiar contraseña">
-                                            <i class="bi bi-key"></i>
-                                        </a>
-
-                                        <!-- Habilitar / deshabilitar: solo administrador -->
-                                        <form th:if="${#authorization.expression('hasRole(''ADMIN'')')
-                                                      and user.enabled
-                                                      and user.username != #authentication.name}"
-                                              th:action="@{/users/{id}/status(id=${user.id})}"
-                                              method="post"
-                                              class="d-inline"
-                                              onsubmit="return confirm('¿Deseas deshabilitar esta cuenta?');">
-
-                                            <input type="hidden"
-                                                   name="enabled"
-                                                   value="false">
-
-                                            <button type="submit"
-                                                    class="btn btn-outline-danger btn-sm"
-                                                    title="Deshabilitar cuenta"
-                                                    aria-label="Deshabilitar cuenta">
-                                                <i class="bi bi-person-x"></i>
-                                            </button>
-                                        </form>
-
-                                        <form th:if="${#authorization.expression('hasRole(''ADMIN'')')
-                                                      and !user.enabled}"
-                                              th:action="@{/users/{id}/status(id=${user.id})}"
-                                              method="post"
-                                              class="d-inline"
-                                              onsubmit="return confirm('¿Deseas habilitar esta cuenta?');">
-
-                                            <input type="hidden"
-                                                   name="enabled"
-                                                   value="true">
-
-                                            <button type="submit"
-                                                    class="btn btn-outline-success btn-sm"
-                                                    title="Habilitar cuenta"
-                                                    aria-label="Habilitar cuenta">
-                                                <i class="bi bi-person-check"></i>
-                                            </button>
-                                        </form>
-
-                                        <span th:if="${#authorization.expression('hasRole(''ADMIN'')')
-                                                      and user.enabled
-                                                      and user.username == #authentication.name}"
-                                              class="text-muted align-self-center"
-                                              title="No puedes deshabilitar tu propia cuenta">
-
-                                              <a class="btn btn-outline-info btn-sm disabled">
-                                                  <i class="bi bi-check-circle"></i>
-                                                  Usuario actual
-                                              </a>
+                                    <td class="text-center">
+                                        <span th:if="${user.enabled}"
+                                              class="badge text-bg-success">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            Habilitado
                                         </span>
 
-                                    </div>
-                                </td>
-                            </tr>
+                                        <span th:unless="${user.enabled}"
+                                              class="badge text-bg-danger">
+                                            <i class="bi bi-x-circle me-1"></i>
+                                            Deshabilitado
+                                        </span>
+                                    </td>
 
-                            <!-- Lista vacía -->
-                            <tr th:if="${#lists.isEmpty(users)}">
-                                <td colspan="7" class="text-center py-4">
-                                    <i class="bi bi-people display-6 text-muted"></i>
-                                    <p class="mt-2 mb-0">
-                                        No hay usuarios registrados.
-                                    </p>
-                                </td>
-                            </tr>
+                                    <td class="text-center">
+                                        <div class="d-inline-flex gap-1">
 
-                            <!-- Sin resultados de búsqueda -->
-                            <tr id="noSearchResults" class="d-none">
-                                <td colspan="7" class="text-center text-muted py-4">
-                                    No se encontraron usuarios con ese criterio.
-                                </td>
-                            </tr>
+                                            <!-- Editar -->
+                                            <a th:href="@{/users/edit/{id}(id=${user.id})}"
+                                               sec:authorize="hasAuthority('USER_UPDATE')"
+                                               class="btn btn-outline-primary btn-sm"
+                                               title="Editar usuario"
+                                               aria-label="Editar usuario">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
 
-                            </tbody>
-                        </table>
+                                            <a th:href="@{/users/{id}/password(id=${user.id})}"
+                                               sec:authorize="hasRole('ADMIN')"
+                                               class="btn btn-outline-warning btn-sm"
+                                               title="Cambiar contraseña"
+                                               aria-label="Cambiar contraseña">
+                                                <i class="bi bi-key"></i>
+                                            </a>
+
+                                            <!-- Habilitar / deshabilitar: solo administrador -->
+                                            <form th:if="${#authorization.expression('hasRole(''ADMIN'')')
+                                                          and user.enabled
+                                                          and user.username != #authentication.name}"
+                                                  th:action="@{/users/{id}/status(id=${user.id})}"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('¿Deseas deshabilitar esta cuenta?');">
+
+                                                <input type="hidden"
+                                                       name="enabled"
+                                                       value="false">
+
+                                                <button type="submit"
+                                                        class="btn btn-outline-danger btn-sm"
+                                                        title="Deshabilitar cuenta"
+                                                        aria-label="Deshabilitar cuenta">
+                                                    <i class="bi bi-person-x"></i>
+                                                </button>
+                                            </form>
+
+                                            <form th:if="${#authorization.expression('hasRole(''ADMIN'')')
+                                                          and !user.enabled}"
+                                                  th:action="@{/users/{id}/status(id=${user.id})}"
+                                                  method="post"
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('¿Deseas habilitar esta cuenta?');">
+
+                                                <input type="hidden"
+                                                       name="enabled"
+                                                       value="true">
+
+                                                <button type="submit"
+                                                        class="btn btn-outline-success btn-sm"
+                                                        title="Habilitar cuenta"
+                                                        aria-label="Habilitar cuenta">
+                                                    <i class="bi bi-person-check"></i>
+                                                </button>
+                                            </form>
+
+                                            <span th:if="${#authorization.expression('hasRole(''ADMIN'')')
+                                                          and user.enabled
+                                                          and user.username == #authentication.name}"
+                                                  class="text-muted align-self-center"
+                                                  title="No puedes deshabilitar tu propia cuenta">
+
+                                                  <a class="btn btn-outline-info btn-sm disabled">
+                                                      <i class="bi bi-check-circle"></i>
+                                                      Usuario actual
+                                                  </a>
+                                            </span>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Lista vacía -->
+                                <tr th:if="${#lists.isEmpty(users)}">
+                                    <td colspan="7" class="text-center py-4">
+                                        <i class="bi bi-people display-6 text-muted"></i>
+                                        <p class="mt-2 mb-0">
+                                            No hay usuarios registrados.
+                                        </p>
+                                    </td>
+                                </tr>
+
+                                <!-- Sin resultados de búsqueda -->
+                                <tr id="noSearchResults" class="d-none">
+                                    <td colspan="7" class="text-center text-muted py-4">
+                                        No se encontraron usuarios con ese criterio.
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-muted small mt-2">
+                            Total de usuarios:
+                            <strong th:text="${#lists.size(users)}">0</strong>
+                        </div>
+
                     </div>
-
-                    <div class="text-muted small mt-2">
-                        Total de usuarios:
-                        <strong th:text="${#lists.size(users)}">0</strong>
-                    </div>
-
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-</main>
+    </main>
 
-<!-- JavaScript de la vista -->
-<th:block layout:fragment="scripts">
-    <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('userSearch');
-            const table = document.getElementById('usersTable');
-            const noResults = document.getElementById('noSearchResults');
+    <!-- JavaScript de la vista -->
+    <th:block layout:fragment="scripts">
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchInput = document.getElementById('userSearch');
+                const table = document.getElementById('usersTable');
+                const noResults = document.getElementById('noSearchResults');
 
-            if (!searchInput || !table || !noResults) {
-                return;
-            }
+                if (!searchInput || !table || !noResults) {
+                    return;
+                }
 
-            const rows = Array.from(
-                table.querySelectorAll('tbody tr[data-user-row]')
-            );
-
-            searchInput.addEventListener('input', () => {
-                const query = searchInput.value
-                    .trim()
-                    .toLocaleLowerCase();
-
-                let visibleRows = 0;
-
-                rows.forEach((row) => {
-                    const matches = row.textContent
-                        .toLocaleLowerCase()
-                        .includes(query);
-
-                    row.classList.toggle('d-none', !matches);
-
-                    if (matches) {
-                        visibleRows++;
-                    }
-                });
-
-                noResults.classList.toggle(
-                    'd-none',
-                    visibleRows > 0 || rows.length === 0
+                const rows = Array.from(
+                    table.querySelectorAll('tbody tr[data-user-row]')
                 );
+
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value
+                        .trim()
+                        .toLocaleLowerCase();
+
+                    let visibleRows = 0;
+
+                    rows.forEach((row) => {
+                        const matches = row.textContent
+                            .toLocaleLowerCase()
+                            .includes(query);
+
+                        row.classList.toggle('d-none', !matches);
+
+                        if (matches) {
+                            visibleRows++;
+                        }
+                    });
+
+                    noResults.classList.toggle(
+                        'd-none',
+                        visibleRows > 0 || rows.length === 0
+                    );
+                });
             });
-        });
-    </script>
-</th:block>
+        </script>
+    </th:block>
 
 </html>
