@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+    <body>
+        <main layout:fragment="main">
+            <!-- Page Header -->
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h3>Gestión de categorías️</h3>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item">
+                                    <a th:href="@{/dashboard}">Inicio</a>
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    Categorías
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <section class="app-content">
+                <div class="container-fluid">
+
+                    <!-- Alert Success -->
+                    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+
+                        <span th:text="${success}"></span>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <!-- Alert Error -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+                        <span th:text="${error}"></span>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <div class="card">
+                        <!-- Card Header -->
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <h3 class="card-title">
+                                    <i class="bi bi-tags me-2"></i>
+                                    Lista de categorías
+                                </h3>
+
+                                <a th:href="@{/categories/create}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-plus-lg me-1"></i>
+                                    Nueva categoría
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover align-middle">
+
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 70px;">ID</th>
+                                            <th>Nombre</th>
+                                            <th>Categoría padre</th>
+                                            <th>Descripción</th>
+                                            <th class="text-center">Estado</th>
+                                            <th class="text-center" style="width: 130px;">Acciones</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr th:each="category : ${categories}">
+                                            <td th:text="${category.id}"></td>
+
+                                            <td>
+                                                <i class="bi bi-folder2 me-1 text-warning"></i>
+                                                <span class="fw-semibold"
+                                                      th:text="${category.name}">
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span th:if="${category.parent != null}" th:text="${category.parent.name}"></span>
+
+                                                <span th:if="${category.parent == null}" class="text-muted">
+                                                    Categoría principal
+                                                </span>
+                                            </td>
+
+                                            <td th:text="${category.description ?: '-'}"></td>
+
+                                            <td class="text-center">
+                                                <span th:if="${category.enabled}" class="badge text-bg-success">
+                                                    Activa
+                                                </span>
+
+                                                <span th:unless="${category.enabled}" class="badge text-bg-secondary">
+                                                    Inactiva
+                                                </span>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <a th:href="@{/categories/edit/{id}(id=${category.id})}" class="btn btn-warning btn-sm" title="Editar">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+
+                                                <form th:if="${category.enabled}"
+                                                      th:action="@{/categories/{id}/status(id=${category.id})}"
+                                                      method="post"
+                                                      class="d-inline">
+
+                                                    <button type="submit"
+                                                            class="btn btn-danger btn-sm"
+                                                            title="Desactivar"
+                                                            onclick="return confirm('¿Deseas desactivar esta categoría?')">
+
+                                                        <i class="bi bi-ban"></i>
+
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+
+                                        <tr th:if="${#lists.isEmpty(categories)}">
+                                            <td colspan="6" class="text-center py-4">
+                                                <i class="bi bi-folder-x fs-2 text-muted"></i>
+                                                <p class="text-muted mb-0 mt-2">No hay categorías registradas.</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Card Footer -->
+                        <div class="card-footer text-muted">
+                            Total de categorías:
+                            <strong th:text="${#lists.size(categories)}">0</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

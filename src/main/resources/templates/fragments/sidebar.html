@@ -43,6 +43,12 @@
                         <p>Gestión de Usuarios</p>
                     </a>
                 </li>
+                <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/categories}" class="nav-link">
+                        <i class="nav-icon bi bi-tags"></i>
+                        <p>Gestión de Categorías</p>
+                    </a>
+                </li>
             </ul>
             <!--end::Sidebar Menu-->
         </nav>

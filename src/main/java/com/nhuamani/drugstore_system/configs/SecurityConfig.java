@@ -68,6 +68,9 @@ public class SecurityConfig {
 
                         .requestMatchers("/configurations").hasRole("ADMIN")
 
+                        .requestMatchers("/categories", "/categories/**")
+                        .hasRole("ADMIN")
+
                         // RESTO
                         .anyRequest()
                         .authenticated()

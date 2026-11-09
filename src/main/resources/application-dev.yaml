@@ -13,9 +13,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update   # create | create-drop | update | validate | none
+      ddl-auto: validate   # create | create-drop | update | validate | none
     show-sql: true
     defer-datasource-initialization: true
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    baseline-version: 3
+    baseline-description: "Existing database schema"
 
   thymeleaf:
     cache: false

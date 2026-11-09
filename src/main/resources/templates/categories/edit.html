@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main}">
+
+    <body>
+        <main layout:fragment="main">
+            <!-- Page Header -->
+            <div class="app-content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h3>Editar categoría</h3>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item">
+                                    <a th:href="@{/dashboard}">Inicio</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a th:href="@{/categories}">Categorías</a>
+                                </li>
+                                <li class="breadcrumb-item active">Editar</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="card card-warning card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Actualizar información
+                            </h3>
+                        </div>
+
+                        <form th:action="@{/categories/edit/{id}(id=${categoryDTO.id})}"
+                              th:object="${categoryDTO}"
+                              method="post">
+
+                            <input type="hidden"
+                                   th:name="${_csrf.parameterName}"
+                                   th:value="${_csrf.token}">
+
+                            <input type="hidden" th:field="*{id}">
+
+                            <div class="card-body row">
+                                <!-- Error general -->
+                                <div th:if="${#fields.hasGlobalErrors()}"
+                                     class="alert alert-danger">
+
+                                    <p th:each="error : ${#fields.globalErrors()}"
+                                       th:text="${error}">
+                                    </p>
+
+                                </div>
+
+                                <!-- ID -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">ID</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:value="${categoryDTO.id}"
+                                           disabled>
+                                </div>
+
+                                <!-- Nombre -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">
+                                        Nombre <span class="text-danger">*</span>
+                                    </label>
+
+                                    <input type="text"
+                                           id="name"
+                                           th:field="*{name}"
+                                           class="form-control"
+                                           th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'"
+                                           placeholder="Nombre de la categoría">
+
+                                    <div class="invalid-feedback"
+                                         th:errors="*{name}">
+                                    </div>
+                                </div>
+
+                                <!-- Descripción -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="description" class="form-label">
+                                        Descripción
+                                    </label>
+
+                                    <textarea id="description"
+                                              th:field="*{description}"
+                                              class="form-control"
+                                              th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'"
+                                              rows="3"
+                                              placeholder="Descripción de la categoría">
+                                    </textarea>
+
+                                    <div class="invalid-feedback"
+                                         th:errors="*{description}">
+                                    </div>
+                                </div>
+
+                                <!-- Categoría padre -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="parentId" class="form-label">
+                                        Categoría padre
+                                    </label>
+
+                                    <select id="parentId"
+                                            th:field="*{parentId}"
+                                            class="form-select">
+
+                                        <option value="">
+                                            -- Categoría principal --
+                                        </option>
+
+                                        <option th:each="parent : ${parentCategories}"
+                                                th:value="${parent.id}"
+                                                th:text="${parent.name}">
+                                        </option>
+
+                                    </select>
+
+                                    <small class="form-text text-muted">
+                                        No puedes seleccionar esta categoría ni sus descendientes.
+                                    </small>
+                                </div>
+
+                                <!-- Estado -->
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox"
+                                               id="enabled"
+                                               th:field="*{enabled}"
+                                               class="form-check-input">
+
+                                        <label for="enabled" class="form-check-label">
+                                            Categoría activa
+                                        </label>
+                                    </div>
+
+                                    <div class="text-danger"
+                                         th:if="${#fields.hasErrors('enabled')}"
+                                         th:errors="*{enabled}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="card-footer d-flex justify-content-end gap-2">
+                                <a th:href="@{/categories}"
+                                   class="btn btn-secondary">
+                                    <i class="bi bi-x-lg me-1"></i>
+                                    Cancelar
+                                </a>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-floppy me-1"></i>
+                                    Actualizar categoría
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

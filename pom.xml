@@ -117,6 +117,17 @@
 			<version>5.1.0</version>
 			<optional>true</optional>
 		</dependency>
+		<!-- Flyway: migraciones de base de datos -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-flyway</artifactId>
+		</dependency>
+		<!-- Soporte de Flyway para MySQL -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
