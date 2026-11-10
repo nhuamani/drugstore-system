@@ -66,9 +66,26 @@
 
                         <!-- Card Body -->
                         <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-search"></i>
+                                            </span>
+
+                                        <input
+                                                type="search"
+                                                id="categorySearch"
+                                                class="form-control"
+                                                placeholder="Buscar por nombre, descripción o categoría padre..."
+                                                autocomplete="off"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered table-hover align-middle">
-
                                     <thead>
                                         <tr>
                                             <th style="width: 70px;">ID</th>
@@ -80,7 +97,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>
+                                    <tbody id="categoryRows" th:fragment="categoryRows">
                                         <tr th:each="category : ${categories}">
                                             <td th:text="${category.id}"></td>
 
@@ -154,4 +171,8 @@
             </section>
         </main>
     </body>
+    
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/categories.js}"></script>
+    </th:block>
 </html>

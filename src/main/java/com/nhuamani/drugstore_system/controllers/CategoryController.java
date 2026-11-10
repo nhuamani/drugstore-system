@@ -191,4 +191,14 @@ public class CategoryController {
 
         model.addAttribute("parentCategories", parentCategories);
     }
+
+    @GetMapping("/search")
+    public String search(
+            @RequestParam(defaultValue = "") String term,
+            Model model
+    ) {
+        model.addAttribute("categories", categoryService.search(term));
+
+        return "categories/index :: categoryRows";
+    }
 }

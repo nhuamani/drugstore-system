@@ -32,4 +32,6 @@ public interface CategoryService {
 
     void disable(Long id);
 
+    List<Category> search(String term);
+
 }

@@ -114,6 +114,16 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<Category> search(String term) {
+        if (term == null || term.isBlank()) {
+            return categoryRepository.findAll();
+        }
+
+        return categoryRepository.searchByTerm(term.trim());
+    }
+
     // -------------------------
     // Métodos privados
     // -------------------------

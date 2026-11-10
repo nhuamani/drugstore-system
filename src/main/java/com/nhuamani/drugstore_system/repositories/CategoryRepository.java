@@ -2,6 +2,8 @@ package com.nhuamani.drugstore_system.repositories;
 
 import com.nhuamani.drugstore_system.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,4 +42,15 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     // Buscar subcategorías activas
     boolean existsByParentIdAndEnabledTrue(Long parentId);
+
+    @Query("""
+        SELECT c
+        FROM Category c
+        LEFT JOIN c.parent p
+        WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :term, '%'))
+           OR LOWER(COALESCE(c.description, '')) LIKE LOWER(CONCAT('%', :term, '%'))
+           OR LOWER(COALESCE(p.name, '')) LIKE LOWER(CONCAT('%', :term, '%'))
+        ORDER BY c.name ASC
+    """)
+    List<Category> searchByTerm(@Param("term") String term);
 }

@@ -13,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate   # create | create-drop | update | validate | none
+      ddl-auto: create   # create | create-drop | update | validate | none
     show-sql: true
     defer-datasource-initialization: true
   flyway:
